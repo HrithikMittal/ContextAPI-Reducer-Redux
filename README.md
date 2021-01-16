@@ -1,6 +1,6 @@
 # Context API  + useReducer() = Redux
 
-Here is a jist of How we have found a substitute of redux i.e. by combining React Context API with useReducer() hook.
+Here is a gist of How we have found a substitute of redux i.e. by combining React Context API with useReducer() hook.
 
 For the demonstration Follow the [link](https://romantic-stonebraker.netlify.app/) .
 
