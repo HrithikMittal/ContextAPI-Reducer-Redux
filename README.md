@@ -1,70 +1,140 @@
-# Getting Started with Create React App
+# What is Context API?
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Context provides a technique which is unaccompanied by props at each level and which passes the data through the component tree.
 
-## Available Scripts
+In a stereotypical React application, data is passed from top to down (i.e. from parent to child) through props, but for certain types of props, this can be unmanageable (e.g. locale preference, UI theme) that many components need inside an application. 
 
-In the project directory, you can run:
+<img src="/Users/adhikanshmittal/Library/Application Support/typora-user-images/image-20210116213604084.png" style="zoom:30%;" />
 
-### `yarn start`
+It lays out a path to share values like these amongst components without having to notably pass a prop through various levels of the tree.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# When Context is actually used?
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Global data for a tree (according to React components), is shared using context. For example: current authenticated user, theme, or preferred language. 
 
-### `yarn test`
+With the help of context we can refrain from passing props in-between elements.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<img src="/Users/adhikanshmittal/Library/Application Support/typora-user-images/image-20210116213822563.png" alt="image-20210116213822563" style="zoom:50%;" />
 
-### `yarn build`
+# Before Using Context
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+At different nesting levels, when many components needs to access a particular data, then context comes into play.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Amount of props that we need to pass through the application, which can be reduced by using the "inversion of control" and it thereby makes the code cleaner. This inturn gives more control to the root components. But when we direct towards more complexity higher in the tree then it makes those components even more complex and the lower level components becomes even more flexible.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# How we can Use Context API + Reducer = Redux
 
-### `yarn eject`
+we are going to follow certain steps to implement it completely which are as follows.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Firstly we are going to create our data into store file which will have Global Data in store folder (we can also set our initial state into this if any exists)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  ```react
+  const initialState = {
+    contacts: [
+      {
+        id: "007",
+        name: "Adhikansh Mittal",
+        email: "amittal@dashclicks.com",
+      },
+      {
+        id: "008",
+        name: "Devandra Prajapat",
+        email: "dprajapat@dashclicks.com",
+      },
+      {
+        id: "009",
+        name: "Vikas Agarwal",
+        email: "vagarwal@dashclicks.com",
+      },
+    ],
+    loading: false,
+    error: null,
+  };
+  ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+-  Now we have to create our actions. It's an object which have all our functions which we are going to perform but It will not have their implementations we will do it later on ``Provider``.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  ```react
+  const actions = {
+    DEL_CONTACT: "DEL_CONTACT",
+    ADD_CONTACT: "ADD_CONTACT",
+    START: "START",
+    COMPLETE: "COMPLETE",
+  };
+  ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Now We have to create our reducers. Reducer is a function which we will take our state as well as our actions and on the based of actions it will return the updated state.
 
-### Analyzing the Bundle Size
+  ```react
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case actions.ADD_CONTACT:
+        return {
+          contacts: [...state.contacts, action.value],
+        };
+      case actions.DEL_CONTACT:
+        return {
+          contacts: state.contacts.filter(
+            (contact) => contact.id !== action.value
+          ),
+        };
+      case actions.START:
+        return {
+          loading: true,
+        };
+      case actions.COMPLETE:
+        return {
+          loading: false,
+        };
+      default:
+        throw new Error();
+    }
+  };
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Now we will create our Context. Creates a Context object will help when React renders a component that subscribes to this Context object it will read the current context value from the closest matching `Provider` above it in the tree.
 
-### Advanced Configuration
+  ```react
+  const ContactContext = React.createContext();
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- 
 
-### `yarn build` fails to minify
+  ```react
+  const ContactContextProvider = (props) => {
+    const [state, dispatch] = React.useReducer(reducer, initialState);
+  
+    const value = {
+      contacts: state.contacts,
+      start: (value) => {
+        dispatch({ type: actions.START, value });
+      },
+      complete: (value) => {
+        dispatch({ type: actions.COMPLETE, value });
+      },
+      addContact: (value) => {
+        dispatch({ type: actions.ADD_CONTACT, value });
+      },
+      delContact: (value) => {
+        dispatch({ type: actions.DEL_CONTACT, value });
+      },
+    };
+  
+    return (
+      <ContactContext.Provider value={value}>
+        {props.children}
+      </ContactContext.Provider>
+    );
+  };
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  
+
