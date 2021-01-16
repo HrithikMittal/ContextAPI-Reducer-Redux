@@ -160,5 +160,15 @@ we are going to follow certain steps to implement it completely which are as fol
 
 ## Contributing
 
-Contributions are more than welcome! Please check out the [contributing guide](./CONTRIBUTING.md).
+Contributions are more than welcome! Please check out the [contributing guide](https://github.com/HrithikMittal/ContextAPI-Reducer-Redux/blob/master/Contributing.md).
+
+
+
+## Thanks
+
+Thank you for patient reading my writeup. It's been a wild ride while creating it.
+
+If you like this repo, you should [follow me on github](https://github.com/HrithikMittal) and [twitter](https://twitter.com/AdhikanshMittal)
+
+Shout out to Facebook Dev Team for the amazing Library.❤️
 
