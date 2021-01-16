@@ -4,7 +4,7 @@ Context provides a technique which is unaccompanied by props at each level and w
 
 In a stereotypical React application, data is passed from top to down (i.e. from parent to child) through props, but for certain types of props, this can be unmanageable (e.g. locale preference, UI theme) that many components need inside an application. 
 
-<img src="/Users/adhikanshmittal/Library/Application Support/typora-user-images/image-20210116213604084.png" style="zoom:30%;" />
+<img src="./images/image-20210116213604084.png" style="zoom:30%;" />
 
 It lays out a path to share values like these amongst components without having to notably pass a prop through various levels of the tree.
 
@@ -14,7 +14,7 @@ Global data for a tree (according to React components), is shared using context.
 
 With the help of context we can refrain from passing props in-between elements.
 
-<img src="/Users/adhikanshmittal/Library/Application Support/typora-user-images/image-20210116213822563.png" alt="image-20210116213822563" style="zoom:50%;" />
+<img src="./images/image-20210116213822563.png" alt="image-20210116213822563" style="zoom:50%;" />
 
 # Before Using Context
 
@@ -106,7 +106,15 @@ we are going to follow certain steps to implement it completely which are as fol
 
 
 
-- 
+- Now we will create our own Provider with the React Provider and we will create our playload here value which will can use to get all the changes to the consumer components which subscribes to the that context.
+
+  Plain and simple, it allows functional components in React access to reducer functions from your state management. 
+
+  A value prop is transferred to consuming components which are successor to this providor and are accepted by the Provider component. One Provider can be connected to many consumers. To overrule values thouroughly within the tree, providers are nested. 
+
+  Successors of a Providor, i.e. consumers, will re-render whenever the Provider’s `value` prop changes. 
+
+  The `useEffect` method is exempted from circulation to the successors of the Providor, i.e. consumers  (including [`.contextType`](https://reactjs.org/docs/context.html#classcontexttype) and [`useContext`](https://reactjs.org/docs/hooks-reference.html#usecontext)) .
 
   ```react
   const ContactContextProvider = (props) => {
@@ -136,5 +144,5 @@ we are going to follow certain steps to implement it completely which are as fol
   };
   ```
 
-  
+  The same algorithm as [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is#Description) is used to find out the changes by comparing the newer and the older values. 
 
