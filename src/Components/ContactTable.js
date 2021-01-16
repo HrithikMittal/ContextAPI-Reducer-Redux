@@ -1,27 +1,23 @@
 import React from "react";
-import { Table } from "semantic-ui-react";
+import { Table, Button, Icon, Segment } from "semantic-ui-react";
 
 import ContactContext from "../VersionContext";
 
 const ContactTable = () => {
-  // Subscribe to `contacts` state and access dispatch function
-  const [state, dispatch] = React.useContext(ContactContext);
-  // Declare a local state to be used internally by this component
+  const { contacts, delContact } = React.useContext(ContactContext);
+
   const [selectedId, setSelectedId] = React.useState();
 
-  const delContact = (id) => {
-    dispatch({
-      type: "DEL_CONTACT",
-      payload: id,
-    });
+  const delContactes = (id) => {
+    delContact(id);
   };
 
   const onRemoveUser = () => {
-    delContact(selectedId);
+    delContactes(selectedId);
     setSelectedId(null); // Clear selection
   };
 
-  const rows = state.contacts.map((contact) => (
+  const rows = contacts.map((contact) => (
     <Table.Row
       key={contact.id}
       onClick={() => setSelectedId(contact.id)}
@@ -32,6 +28,39 @@ const ContactTable = () => {
       <Table.Cell>{contact.email}</Table.Cell>
     </Table.Row>
   ));
+
+  return (
+    <Segment>
+      <Table celled striped selectable>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Id</Table.HeaderCell>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Email</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>{rows}</Table.Body>
+        <Table.Footer fullWidth>
+          <Table.Row>
+            <Table.HeaderCell />
+            <Table.HeaderCell colSpan="4">
+              <Button
+                floated="right"
+                icon
+                labelPosition="left"
+                color="red"
+                size="small"
+                disabled={!selectedId}
+                onClick={onRemoveUser}
+              >
+                <Icon name="trash" /> Remove User
+              </Button>
+            </Table.HeaderCell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
+    </Segment>
+  );
 };
 
 export default ContactTable;

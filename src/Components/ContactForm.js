@@ -8,14 +8,10 @@ import ContactContext from "../VersionContext";
 const ContactForm = () => {
   const name = useFormInput("");
   const email = useFormInput("");
-  const [state, dispatch] = React.useContext(ContactContext);
+  const { addContact } = React.useContext(ContactContext);
 
   const onSubmit = () => {
-    dispatch({
-      type: "ADD_CONTACT",
-      payload: { id: _.uniqueId(10), name: name.value, email: email.value },
-    });
-    // Reset Form
+    addContact({ id: _.uniqueId(10), name: name.value, email: email.value });
     name.onReset();
     email.onReset();
   };
