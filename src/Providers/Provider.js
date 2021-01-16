@@ -1,9 +1,9 @@
 import React, { useReducer } from "react";
 
-import ContactContext from "./VersionContext";
-import reducer from "./reducer";
-import initialState from "./store";
-import actions from "./actions";
+import ContactContext from "../Context/Context";
+import reducer from "../Reducers/reducer";
+import initialState from "../Stores/store";
+import actions from "../Actions/actions";
 
 const ContactContextProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);

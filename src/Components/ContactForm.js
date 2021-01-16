@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import _ from "lodash";
 import { Button, Form, Input, Segment } from "semantic-ui-react";
 
 import useFormInput from "./UserFormInput";
-import ContactContext from "../VersionContext";
+import ContactContext from "../Context/Context";
 
 const ContactForm = () => {
   const name = useFormInput("");
   const email = useFormInput("");
-  const { addContact } = React.useContext(ContactContext);
+  const { addContact } = useContext(ContactContext);
 
   const onSubmit = () => {
     addContact({ id: _.uniqueId(10), name: name.value, email: email.value });

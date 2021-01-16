@@ -1,11 +1,10 @@
 import React from "react";
-import "./App.css";
 import "fomantic-ui-css/semantic.min.css";
 
 import { Container } from "semantic-ui-react";
 
-import ContactContextProvider from "./Provider";
-import ContactView from "./ContactView";
+import ContactContextProvider from "./Providers/Provider";
+import ContactView from "./Components/ContactView";
 
 const App = () => {
   return (

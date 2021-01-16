@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Button, Icon, Segment } from "semantic-ui-react";
 
-import ContactContext from "../VersionContext";
+import ContactContext from "../Context/Context";
 
 const ContactTable = () => {
   const { contacts, delContact } = React.useContext(ContactContext);
